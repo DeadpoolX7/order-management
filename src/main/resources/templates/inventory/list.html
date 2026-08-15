@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Inventory</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        a {
+            padding: 8px 14px;
+        }
+
+        .available {
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>Inventory</h1>
+
+    <a href="/products">
+        Products
+    </a>
+
+</div>
+
+<table>
+
+    <thead>
+
+    <tr>
+        <th>Product</th>
+        <th>SKU</th>
+        <th>Total Quantity</th>
+        <th>Reserved</th>
+        <th>Available</th>
+        <th>Updated</th>
+        <th>Actions</th>
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    <tr th:each="inventory : ${inventories}">
+
+        <td th:text="${inventory.product.name}">
+            Product
+        </td>
+
+        <td th:text="${inventory.product.sku}">
+            SKU
+        </td>
+
+        <td th:text="${inventory.quantity}">
+            0
+        </td>
+
+        <td th:text="${inventory.reservedQuantity}">
+            0
+        </td>
+
+        <td class="available"
+            th:text="${inventory.availableQuantity}">
+            0
+        </td>
+
+        <td th:text="${inventory.updatedAt}">
+            Date
+        </td>
+
+        <td>
+
+            <a th:href="@{/inventory/{productId}/edit(
+                    productId=${inventory.product.id}
+                )}">
+                Update Stock
+            </a>
+
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+</body>
+
+</html>

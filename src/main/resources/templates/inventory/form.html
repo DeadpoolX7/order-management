@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Update Inventory</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        input[readonly] {
+            background: #eee;
+        }
+
+        .error {
+            color: #c00;
+            margin-top: 5px;
+        }
+
+        .global-error {
+            color: #c00;
+            margin-bottom: 20px;
+        }
+
+        button,
+        a {
+            padding: 10px 16px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Update Inventory</h1>
+
+<!-- <div class="global-error"
+     th:if="${#fields.hasGlobalErrors()}">
+
+    <p th:each="error : ${#fields.globalErrors()}"
+       th:text="${error.defaultMessage}">
+        Inventory error
+    </p>
+
+</div> -->
+
+<form th:action="@{/inventory/save}"
+      th:object="${inventoryForm}"
+      method="post">
+
+    <div class="global-error"
+         th:if="${#fields.hasGlobalErrors()}">
+
+        <p th:each="error : ${#fields.globalErrors()}"
+           th:text="${error.defaultMessage}">
+            Inventory error
+        </p>
+
+    </div>
+
+    <input type="hidden"
+           th:field="*{productId}">
+
+    <div class="field">
+
+        <label>Product</label>
+
+        <input type="text"
+               th:value="${inventoryForm.productName}"
+               readonly>
+
+    </div>
+
+    <div class="field">
+
+        <label>SKU</label>
+
+        <input type="text"
+               th:value="${inventoryForm.sku}"
+               readonly>
+
+    </div>
+
+    <div class="field">
+
+        <label for="quantity">
+            Total Quantity
+        </label>
+
+        <input id="quantity"
+               type="number"
+               min="0"
+               th:field="*{quantity}">
+
+        <div class="error"
+             th:if="${#fields.hasErrors('quantity')}"
+             th:errors="*{quantity}">
+        </div>
+
+    </div>
+
+    <div class="field">
+
+        <label for="reservedQuantity">
+            Reserved Quantity
+        </label>
+
+        <input id="reservedQuantity"
+               type="number"
+               min="0"
+               th:field="*{reservedQuantity}">
+
+        <div class="error"
+             th:if="${#fields.hasErrors('reservedQuantity')}"
+             th:errors="*{reservedQuantity}">
+        </div>
+
+    </div>
+
+    <button type="submit">
+        Save Inventory
+    </button>
+
+    <a href="/inventory">
+        Cancel
+    </a>
+
+</form>
+
+</body>
+
+</html>
