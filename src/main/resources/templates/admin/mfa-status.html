@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Admin Security</title>
+
+</head>
+
+<body>
+
+<h1>Admin Security</h1>
+
+<div th:if="${enabled}">
+
+    <h2>Authenticator enabled</h2>
+
+    <p>
+        Your administrator account is protected by
+        password + TOTP.
+    </p>
+
+</div>
+
+<div th:unless="${enabled}">
+
+    <h2>Authenticator not enabled</h2>
+
+    <p>
+        Protect your administrator account
+        with an authenticator application.
+    </p>
+
+    <a href="/admin/mfa/setup">
+        Set up authenticator
+    </a>
+
+</div>
+
+</body>
+
+</html>

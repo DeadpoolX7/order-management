@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Verification</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 450px;
+            margin: 80px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        input {
+            width: 180px;
+            padding: 12px;
+            font-size: 22px;
+            text-align: center;
+            letter-spacing: 5px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 12px 25px;
+            cursor: pointer;
+        }
+
+        .error {
+            color: #c00;
+            margin-bottom: 15px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Admin Verification</h1>
+
+<p>
+    Enter the 6-digit code from your authenticator app.
+</p>
+
+<div class="error"
+     th:if="${param.error}">
+
+    Invalid authenticator code.
+
+</div>
+
+<form th:action="@{/admin/totp/verify}"
+      method="post">
+
+    <input
+            type="text"
+            name="code"
+            inputmode="numeric"
+            pattern="[0-9]{6}"
+            maxlength="6"
+            autocomplete="one-time-code"
+            required
+    >
+
+    <br>
+
+    <button type="submit">
+        Verify
+    </button>
+
+</form>
+
+</body>
+
+</html>
