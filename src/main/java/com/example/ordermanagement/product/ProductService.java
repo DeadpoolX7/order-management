@@ -1,5 +1,7 @@
 package com.example.ordermanagement.product;
 
+import com.example.ordermanagement.inventory.Inventory;
+import com.example.ordermanagement.inventory.InventoryService;
 import com.example.ordermanagement.product.dto.ProductForm;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,9 +13,11 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final InventoryService inventoryService;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, InventoryService inventoryService) {
         this.productRepository = productRepository;
+        this.inventoryService = inventoryService;
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +53,9 @@ public class ProductService {
 
         Product product;
 
-        if (form.getId() == null) {
+        boolean isNew = form.getId() == null;
+
+        if (isNew) {
             product = new Product();
         } else {
             product = findById(form.getId());
@@ -65,11 +71,16 @@ public class ProductService {
         product.setSku(form.getSku().trim().toUpperCase());
         product.setCategory(form.getCategory().trim());
 
-        productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+
+        if (isNew) {
+            inventoryService.createForProduct(savedProduct);
+        }
     }
 
     public void delete(Long id) {
         Product product = findById(id);
+        inventoryService.deleteByProductId(id);
         productRepository.delete(product);
     }
 }
